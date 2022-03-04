@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bufio"
+	"fmt"
 	"log"
 	"net"
 	"os"
@@ -40,7 +42,17 @@ func main() {
 	}
 }
 
-func sock5Handshake(conn net.Conn) {
-	print("handshake")
+func sock5Handshake(conn net.Conn) error {
+	print("sock5 handshake")
 
+	reader := bufio.NewReaderSize(conn, 1)
+
+	// 获取建立连接请求
+	var connectRequest [2]byte
+	_, err := reader.Read(connectRequest[:])
+	if err != nil {
+		return fmt.Errorf("sock5连接请求获取失败: %w", err)
+	}
+
+	return nil
 }
