@@ -41,5 +41,6 @@ func main() {
 }
 
 func sock5Handshake(conn net.Conn) {
-	print("hand shake")
+	print("handshake")
+
 }
