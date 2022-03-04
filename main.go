@@ -3,6 +3,9 @@ package main
 import (
 	"log"
 	"net"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 func main() {
@@ -21,6 +24,22 @@ func main() {
 			if err != nil {
 				continue
 			}
+
+			go func() {
+				defer conn.Close()
+				sock5Handshake(conn)
+			}()
 		}
 	}()
+
+	{
+		sig := make(chan os.Signal, 1)
+		signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
+		<-sig
+		log.Println("进程退出")
+	}
+}
+
+func sock5Handshake(conn net.Conn) {
+	print("hand shake")
 }
